@@ -41,16 +41,16 @@ Meeting Time Optimizer is a web-based application designed to help users schedul
 ## **Screenshots**
 
 ### **Home Page**
-![alt text](Home-screen.png)
+![alt text](images/Home-screen.png)
 
 
 ### **Add Meeting Form**
-![alt text](Add-meeting.png)
+![alt text](images/Add-meeting.png)
 
-![alt text](Add-meeting2.png)
+![alt text](images/Add-meeting2.png)
 
 ### **View Meetings**
-![alt text](View-meeting.png)
+![alt text](images/View-meeting.png)
 
 ### **Conflict Alert**
-![alt text](Conflict-alert.png)
+![alt text](images/Conflict-alert.png)
