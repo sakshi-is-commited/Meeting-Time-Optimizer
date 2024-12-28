@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Time Optimizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Meeting Time Optimizer</h1>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title">Add New Meeting</h5>
+                <form id="add-meeting-form">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Meeting Title</label>
+                        <input type="text" class="form-control" id="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="start-time" class="form-label">Start Time</label>
+                        <input type="datetime-local" class="form-control" id="start-time" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="end-time" class="form-label">End Time</label>
+                        <input type="datetime-local" class="form-control" id="end-time" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Meeting</button>
+                </form>
+            </div>
+        </div>
+
+        <h3>Scheduled Meetings</h3>
+        <ul class="list-group" id="meeting-list">
+            {% for meeting in meetings %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>{{ meeting.title }}</h5>
+                    <p>{{ meeting.start_time }} - {{ meeting.end_time }}</p>
+                </div>
+                <button class="btn btn-danger btn-sm delete-meeting" data-id="{{ loop.index0 }}">Delete</button>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('add-meeting-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const startTime = document.getElementById('start-time').value;
+            const endTime = document.getElementById('end-time').value;
+
+            const response = await fetch('/add_meeting', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, start_time: startTime, end_time: endTime }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert(result.error);
+            }
+        });
+
+        document.querySelectorAll('.delete-meeting').forEach((button) => {
+            button.addEventListener('click', async () => {
+                const id = button.getAttribute('data-id');
+
+                const response = await fetch('/delete_meeting', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert(result.error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
